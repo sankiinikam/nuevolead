@@ -228,6 +228,11 @@ export default function LeadTable({
                           {lead.industry}
                         </span>
                       )}
+                      {lead.assignedTo && (
+                        <span className="px-1.5 py-0.2 rounded bg-indigo-50 dark:bg-indigo-950/60 text-[10px] text-indigo-700 dark:text-indigo-300 font-semibold border border-indigo-200 dark:border-indigo-800">
+                          👤 {lead.assignedTo.name}
+                        </span>
+                      )}
                     </div>
                   </td>
 

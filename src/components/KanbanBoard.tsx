@@ -129,6 +129,11 @@ export default function KanbanBoard({
                               <span>{lead.city}</span>
                             </div>
                           )}
+                          {lead.assignedTo && (
+                            <div className="text-[11px] text-indigo-600 dark:text-indigo-400 font-medium truncate">
+                              👤 {lead.assignedTo.name}
+                            </div>
+                          )}
                         </div>
 
                         {/* Next Follow Up or Warning */}

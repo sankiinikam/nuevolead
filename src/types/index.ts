@@ -1,3 +1,33 @@
+export type Role = 'ADMIN' | 'MANAGER' | 'SALES_EXECUTIVE';
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  designation?: string;
+  department?: string;
+  phone?: string;
+  targetRevenue: number;
+  reportingToId?: string;
+  reportingTo?: {
+    id: string;
+    name: string;
+    role: Role;
+    designation?: string;
+  } | null;
+  subordinates?: User[];
+  isActive: boolean;
+  assignedLeads?: Lead[];
+  createdAt?: string;
+  stats?: {
+    totalLeads: number;
+    hotLeads: number;
+    pipelineValue: number;
+    wonRevenue: number;
+  };
+}
+
 export interface Contact {
   id?: string;
   title?: string;
@@ -34,6 +64,7 @@ export interface LeadProduct {
 
 export interface FollowUp {
   id?: string;
+  leadId?: string;
   followUpDate: string;
   followUpTime?: string;
   followUpType: string;
@@ -44,6 +75,17 @@ export interface FollowUp {
   nextAction?: string;
   smsAlert?: boolean;
   createdAt?: string;
+  lead?: {
+    id: string;
+    leadNumber: string;
+    customerName: string;
+    status: string;
+    dealValue: number;
+    assignedTo?: {
+      id: string;
+      name: string;
+    };
+  };
 }
 
 export interface Task {
@@ -73,6 +115,14 @@ export interface Lead {
   managerRemarks?: string;
   enteredBy: string;
 
+  assignedToId?: string;
+  assignedTo?: {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+  } | null;
+
   contactName?: string;
   designation?: string;
   mobile?: string;
@@ -86,4 +136,3 @@ export interface Lead {
   followUps: FollowUp[];
   tasks: Task[];
 }
-

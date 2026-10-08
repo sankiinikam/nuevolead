@@ -67,6 +67,7 @@ export async function PUT(
         expectedClosingDate: body.expectedClosingDate ? new Date(body.expectedClosingDate) : null,
         orderValue,
         managerRemarks: body.managerRemarks,
+        assignedToId: body.assignedToId !== undefined ? body.assignedToId : undefined,
         contactName: body.contactName,
         designation: body.designation,
         mobile: body.mobile,
@@ -86,6 +87,9 @@ export async function PUT(
         } : undefined,
       },
       include: {
+        assignedTo: {
+          select: { id: true, name: true, email: true, role: true },
+        },
         contacts: true,
         addresses: true,
         products: true,

@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/leads - Fetch all leads with relations and search/filter
 export async function GET(request: Request) {
   try {
@@ -8,9 +10,14 @@ export async function GET(request: Request) {
     const status = searchParams.get('status');
     const search = searchParams.get('search');
 
+    const assignedToId = searchParams.get('assignedToId');
+
     const where: any = {};
     if (status && status !== 'all') {
       where.status = status;
+    }
+    if (assignedToId && assignedToId !== 'all') {
+      where.assignedToId = assignedToId;
     }
     if (search) {
       where.OR = [
@@ -25,6 +32,9 @@ export async function GET(request: Request) {
     const leads = await prisma.lead.findMany({
       where,
       include: {
+        assignedTo: {
+          select: { id: true, name: true, email: true, role: true, designation: true },
+        },
         contacts: true,
         addresses: true,
         products: true,
@@ -79,6 +89,7 @@ export async function POST(request: Request) {
         orderValue,
         managerRemarks: body.managerRemarks,
         enteredBy: body.enteredBy || 'Sales Executive',
+        assignedToId: body.assignedToId || null,
         contactName: body.contactName,
         designation: body.designation,
         mobile: body.mobile,

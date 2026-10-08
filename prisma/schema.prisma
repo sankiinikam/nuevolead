@@ -7,6 +7,26 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  password      String   @default("password123")
+  role          String   @default("SALES_EXECUTIVE") // ADMIN, MANAGER, SALES_EXECUTIVE
+  designation   String?  @default("Sales Executive")
+  department    String?  @default("Sales")
+  phone         String?
+  targetRevenue Float    @default(1000000)
+  reportingToId String?
+  reportingTo   User?    @relation("Hierarchy", fields: [reportingToId], references: [id])
+  subordinates  User[]   @relation("Hierarchy")
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  assignedLeads Lead[]   @relation("AssignedLeads")
+}
+
 model Lead {
   id                   String        @id @default(cuid())
   leadNumber           String        @unique // e.g. LD-101
@@ -27,7 +47,11 @@ model Lead {
   managerRemarks       String?
   enteredBy            String        @default("Sales Representative")
 
-  // Primary Contact
+  // Assigned Sales Employee
+  assignedToId         String?
+  assignedTo           User?         @relation("AssignedLeads", fields: [assignedToId], references: [id])
+
+  // Primary Contact summary fields
   contactName          String?
   designation          String?
   mobile               String?
@@ -58,6 +82,7 @@ model Contact {
   mobile      String?
   email       String?
   linkedin    String?
+
   createdAt   DateTime @default(now())
 }
 
@@ -65,13 +90,15 @@ model Address {
   id        String   @id @default(cuid())
   leadId    String
   lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
-  type      String   @default("Primary") // Primary, Secondary
+  type      String   @default("Primary") // Primary, Factory, Billing, Branch
   address1  String
   address2  String?
   city      String
   state     String
   pin       String?
   country   String   @default("India")
+
+  createdAt DateTime @default(now())
 }
 
 model LeadProduct {
@@ -82,34 +109,37 @@ model LeadProduct {
   category     String?
   subCategory  String?
   mrp          Float    @default(0)
-  offeredPrice Float
-  unitQuantity Float    @default(1)
-  totalAmount  Float    // offeredPrice * unitQuantity
+  offeredPrice Float    @default(0)
+  unitQuantity Int      @default(1)
+  totalAmount  Float    @default(0)
+
+  createdAt    DateTime @default(now())
 }
 
 model FollowUp {
-  id                String    @id @default(cuid())
+  id                String   @id @default(cuid())
   leadId            String
-  lead              Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead              Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   followUpDate      DateTime
-  followUpTime      String?
-  followUpType      String    // Call Follow up, In-Person Meeting, Demo
-  leadStatus        String
+  followUpTime      String?  // e.g. "14:30"
+  followUpType      String   @default("Call") // Call, Direct Visit, Virtual Demo, Email
+  leadStatus        String   // Status at time of follow up
   contactPerson     String?
   discussionSummary String
   nextFollowUpDate  DateTime?
   nextAction        String?
-  smsAlert          Boolean   @default(false)
-  createdAt         DateTime  @default(now())
+  smsAlert          Boolean  @default(false)
+
+  createdAt         DateTime @default(now())
 }
 
 model Task {
-  id          String    @id @default(cuid())
+  id          String   @id @default(cuid())
   leadId      String
-  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
   title       String
-  isCompleted Boolean   @default(false)
+  isCompleted Boolean  @default(false)
   dueDate     DateTime?
-  createdAt   DateTime  @default(now())
-}
 
+  createdAt   DateTime @default(now())
+}

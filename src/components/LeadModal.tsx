@@ -78,6 +78,15 @@ export default function LeadModal({
   const [visitDate, setVisitDate] = useState('');
   const [visitType, setVisitType] = useState('Direct Visit');
   const [enteredBy, setEnteredBy] = useState('Sanket');
+  const [assignedToId, setAssignedToId] = useState('');
+  const [teamMembers, setTeamMembers] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch('/api/users')
+      .then((r) => r.json())
+      .then((d) => setTeamMembers(Array.isArray(d) ? d : []))
+      .catch(() => {});
+  }, []);
 
   const [status, setStatus] = useState<Lead['status']>('Hot');
   const [dealValue, setDealValue] = useState<number>(0);
@@ -116,6 +125,7 @@ export default function LeadModal({
       setVisitDate(leadToEdit.visitDate ? leadToEdit.visitDate.split('T')[0] : '');
       setVisitType(leadToEdit.visitType || 'Direct Visit');
       setEnteredBy(leadToEdit.enteredBy || 'Sanket');
+      setAssignedToId(leadToEdit.assignedToId || leadToEdit.assignedTo?.id || '');
 
       setStatus(leadToEdit.status || 'Hot');
       setDealValue(leadToEdit.dealValue || 0);
@@ -151,6 +161,7 @@ export default function LeadModal({
       setVisitDate(today);
       setVisitType('Direct Visit');
       setEnteredBy('Sanket');
+      setAssignedToId('');
 
       setStatus('Hot');
       setDealValue(0);
@@ -356,6 +367,7 @@ export default function LeadModal({
         visitDate,
         visitType,
         enteredBy,
+        assignedToId: assignedToId || undefined,
         status,
         dealValue: Number(dealValue) || 0,
         probability: Number(probability) || 0,
@@ -568,6 +580,24 @@ export default function LeadModal({
                     placeholder="e.g. Sanket / Sales Exec"
                     className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    Assigned Account Executive
+                  </label>
+                  <select
+                    value={assignedToId}
+                    onChange={(e) => setAssignedToId(e.target.value)}
+                    className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:outline-none font-medium"
+                  >
+                    <option value="">Unassigned</option>
+                    {teamMembers.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.name} ({m.role === 'ADMIN' ? 'Admin' : m.role === 'MANAGER' ? 'Manager' : 'Rep'}) — {m.designation}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
 
