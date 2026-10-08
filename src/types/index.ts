@@ -86,3 +86,4 @@ export interface Lead {
   followUps: FollowUp[];
   tasks: Task[];
 }
+
