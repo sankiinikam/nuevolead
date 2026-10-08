@@ -1,0 +1,115 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Lead {
+  id                   String        @id @default(cuid())
+  leadNumber           String        @unique // e.g. LD-101
+  customerName         String
+  visitDate            DateTime
+  visitType            String        @default("New Prospect") // New Prospect, Follow-Up, Repeat Order
+  industry             String?       // Retail, Dealer, Wholesaler, Manufacturing
+  source               String?       // Telecalling, Advertising, Website, Referral
+  status               String        @default("Hot") // Cold, Warm, Hot, Close-Won, Close-Lost, Future-Prospect
+  dealValue            Float         @default(0) // Anticipated Deal Value in INR
+  probability          Int           @default(7) // 1 to 10
+  discussionSummary    String?
+  requirements         String?
+  nextStep             String?
+  nextFollowUpDate     DateTime?
+  expectedClosingDate  DateTime?
+  orderValue           Float         @default(0) // Locked when Close-Won
+  managerRemarks       String?
+  enteredBy            String        @default("Sales Representative")
+
+  // Primary Contact
+  contactName          String?
+  designation          String?
+  mobile               String?
+  email                String?
+  city                 String?
+  state                String?
+
+  // Relations
+  contacts             Contact[]
+  addresses            Address[]
+  products             LeadProduct[]
+  followUps            FollowUp[]
+  tasks                Task[]
+
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+}
+
+model Contact {
+  id          String   @id @default(cuid())
+  leadId      String
+  lead        Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  title       String?  // Mr, Ms, Dr
+  name        String
+  designation String?  // CEO, Director, Procurement Head
+  department  String?
+  phone       String?
+  mobile      String?
+  email       String?
+  linkedin    String?
+  createdAt   DateTime @default(now())
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  type      String   @default("Primary") // Primary, Secondary
+  address1  String
+  address2  String?
+  city      String
+  state     String
+  pin       String?
+  country   String   @default("India")
+}
+
+model LeadProduct {
+  id           String   @id @default(cuid())
+  leadId       String
+  lead         Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  productName  String
+  category     String?
+  subCategory  String?
+  mrp          Float    @default(0)
+  offeredPrice Float
+  unitQuantity Float    @default(1)
+  totalAmount  Float    // offeredPrice * unitQuantity
+}
+
+model FollowUp {
+  id                String    @id @default(cuid())
+  leadId            String
+  lead              Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  followUpDate      DateTime
+  followUpTime      String?
+  followUpType      String    // Call Follow up, In-Person Meeting, Demo
+  leadStatus        String
+  contactPerson     String?
+  discussionSummary String
+  nextFollowUpDate  DateTime?
+  nextAction        String?
+  smsAlert          Boolean   @default(false)
+  createdAt         DateTime  @default(now())
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  title       String
+  isCompleted Boolean   @default(false)
+  dueDate     DateTime?
+  createdAt   DateTime  @default(now())
+}
+

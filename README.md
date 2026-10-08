@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ApexPulse CRM (Version 1.0)
+### Enterprise Lead & Sales Pipeline Management Platform
 
-## Getting Started
+ApexPulse CRM is a modern, responsive, full-stack CRM application engineered from the ground up for high-velocity sales teams, corporate account managers, and executive leadership. Built strictly in accordance with standard enterprise lead acquisition protocols (featuring multi-stakeholder management, line-item quotation engines, stage progression rules, and dual-box export selectors).
 
-First, run the development server:
+---
+
+## 🚀 Key Features (Faithful to Standard Lead Management Protocol)
+
+1. **Enterprise Opportunity Pipeline**:
+   - 6 standardized stages: `Hot`, `Warm`, `Cold`, `Future-Prospect`, `Close-Won`, and `Close-Lost`.
+   - Dual interface: Switch instantly between a dense, high-efficiency **Data Table View** and an agile **Kanban Pipeline Board**.
+   - Real-time search across Company names, Lead Numbers, Sales Reps, and Cities.
+
+2. **Multi-Contact Decision Maker Tracking**:
+   - B2B enterprise deals involve multiple stakeholders. ApexPulse allows attaching unlimited decision makers (Managing Directors, VP Procurement, Technical Evaluators, Plant Heads) to a single account.
+   - Captures Title, Designation, Department, Phone, Mobile, Email, and LinkedIn profile.
+
+3. **Multi-Location Address Management**:
+   - Manage multiple facilities per account: Corporate Headquarters, Industrial Plants / Factories, Billing Addresses, and Regional Branches.
+
+4. **Quotation & Line Items Engine**:
+   - Itemized quotation builder with MRP, Offered Price, and Unit Quantity.
+   - Real-time dynamic total amount calculation and pipeline valuation sync.
+
+5. **Mandatory "Close-Won" Protocol**:
+   - When a deal is marked as `Close-Won`, the system automatically locks the **Final Order Value** to the total sum of quoted deliverables to guarantee zero discrepancy in executive reporting.
+
+6. **Follow-Up Audits & Activity History**:
+   - Log meetings, direct in-person visits, phone calls, and virtual demos.
+   - Update lead stages directly from follow-ups.
+   - Schedule future touchpoints with automated SMS & Email alerts.
+   - Complete reverse-chronological timeline of past stakeholder discussions.
+
+7. **Reporting Manager Hierarchy Remarks**:
+   - Dedicated supervisory review field for sales directors and regional managers to record strategic guidance and margin approvals.
+
+8. **Dual-Box Field Exporter**:
+   - Dual-column transfer selector (`Available Fields` $\leftrightarrow$ `Selected to Export`) enabling users to tailor custom CSV/Excel reports on demand.
+
+---
+
+## 🛠️ Technology Stack
+
+- **Frontend**: Next.js 14 (App Router), React 18, Tailwind CSS, Lucide Icons
+- **Backend**: Next.js Serverless Edge & Node API Routes
+- **Database & ORM**: Prisma ORM with SQLite (local zero-dependency development) and 100% drop-in compatibility with PostgreSQL (for production)
+- **Typing**: Strict TypeScript end-to-end
+
+---
+
+## 💻 Running Locally on Your Laptop
 
 ```bash
+# 1. Navigate to project folder
+cd C:\xampp\htdocs\apexpulse-crm
+
+# 2. Install dependencies (already installed)
+npm install
+
+# 3. Generate and Push Database Schema (SQLite)
+npx prisma generate
+npx prisma db push
+
+# 4. Seed sample leads (optional)
+npx prisma db seed
+
+# 5. Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🌐 100% FREE Hosting Guide ($0 Cloud Deployment)
 
-## Learn More
+You can host ApexPulse CRM completely free of charge with high performance and zero monthly fees.
 
-To learn more about Next.js, take a look at the following resources:
+### Step 1: Create a Free PostgreSQL Database ($0)
+Choose either **Supabase** or **Neon**:
+1. Go to [https://supabase.com](https://supabase.com) (or [https://neon.tech](https://neon.tech)) and sign up for a free account.
+2. Click **New Project** and choose a database name (e.g. `apexpulse-crm`).
+3. Under **Database Settings** $\rightarrow$ **Connection String**, copy the **URI** (e.g., `postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?pgbouncer=true`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Step 2: Push Your Code to GitHub (Free)
+1. Initialize git and commit your code:
+   ```bash
+   git add .
+   git commit -m "Initial ApexPulse CRM release"
+   ```
+2. Create a new repository on [GitHub](https://github.com) (e.g. `apexpulse-crm`).
+3. Push your repository:
+   ```bash
+   git remote add origin https://github.com/<your-username>/apexpulse-crm.git
+   git branch -M main
+   git push -u origin main
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Step 3: Deploy on Vercel for Free ($0)
+1. Go to [https://vercel.com](https://vercel.com) and log in with GitHub.
+2. Click **Add New** $\rightarrow$ **Project**, then import your `apexpulse-crm` repository.
+3. In the **Environment Variables** section:
+   - Key: `DATABASE_URL`
+   - Value: `<Your PostgreSQL connection string from Step 1>`
+4. In `prisma/schema.prisma`, when deploying to PostgreSQL, update:
+   ```prisma
+   datasource db {
+     provider = "postgresql"
+     url      = env("DATABASE_URL")
+   }
+   ```
+5. Click **Deploy**. Vercel will build and launch your live application with a free `.vercel.app` domain and free global SSL certificate!
