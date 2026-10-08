@@ -591,3 +591,4 @@ export default function TeamManagement({ onRefresh }: TeamManagementProps) {
     </div>
   );
 }
+
