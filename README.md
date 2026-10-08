@@ -1,7 +1,7 @@
-# ApexPulse CRM (Version 1.0)
+# Nuevo Lead CRM (Version 1.0)
 ### Enterprise Lead & Sales Pipeline Management Platform
 
-ApexPulse CRM is a modern, responsive, full-stack CRM application engineered from the ground up for high-velocity sales teams, corporate account managers, and executive leadership. Built strictly in accordance with standard enterprise lead acquisition protocols (featuring multi-stakeholder management, line-item quotation engines, stage progression rules, and dual-box export selectors).
+Nuevo Lead CRM is a modern, responsive, full-stack CRM application engineered from the ground up for high-velocity sales teams, corporate account managers, and executive leadership. Built strictly in accordance with standard enterprise lead acquisition protocols (featuring multi-stakeholder management, line-item quotation engines, stage progression rules, and dual-box export selectors).
 
 ---
 
@@ -13,7 +13,7 @@ ApexPulse CRM is a modern, responsive, full-stack CRM application engineered fro
    - Real-time search across Company names, Lead Numbers, Sales Reps, and Cities.
 
 2. **Multi-Contact Decision Maker Tracking**:
-   - B2B enterprise deals involve multiple stakeholders. ApexPulse allows attaching unlimited decision makers (Managing Directors, VP Procurement, Technical Evaluators, Plant Heads) to a single account.
+   - B2B enterprise deals involve multiple stakeholders. Nuevo Lead allows attaching unlimited decision makers (Managing Directors, VP Procurement, Technical Evaluators, Plant Heads) to a single account.
    - Captures Title, Designation, Department, Phone, Mobile, Email, and LinkedIn profile.
 
 3. **Multi-Location Address Management**:
@@ -55,7 +55,7 @@ ApexPulse CRM is a modern, responsive, full-stack CRM application engineered fro
 # 1. Navigate to project folder
 cd C:\xampp\htdocs\apexpulse-crm
 
-# 2. Install dependencies (already installed)
+# 2. Install dependencies
 npm install
 
 # 3. Generate and Push Database Schema (SQLite)
@@ -75,39 +75,32 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🌐 100% FREE Hosting Guide ($0 Cloud Deployment)
 
-You can host ApexPulse CRM completely free of charge with high performance and zero monthly fees.
+You can host Nuevo Lead CRM completely free of charge with high performance and zero monthly fees.
 
 ### Step 1: Create a Free PostgreSQL Database ($0)
-Choose either **Supabase** or **Neon**:
-1. Go to [https://supabase.com](https://supabase.com) (or [https://neon.tech](https://neon.tech)) and sign up for a free account.
-2. Click **New Project** and choose a database name (e.g. `apexpulse-crm`).
-3. Under **Database Settings** $\rightarrow$ **Connection String**, copy the **URI** (e.g., `postgresql://postgres:[PASSWORD]@db.[PROJECT].supabase.co:5432/postgres?pgbouncer=true`).
+Choose either **Neon** or **Supabase**:
+1. Go to [https://neon.tech](https://neon.tech) and sign up for a free account.
+2. Click **New Project** and name it `nuevo-lead-crm`.
+3. Under **Connection Details**, select **Prisma** and copy the URI.
 
 ### Step 2: Push Your Code to GitHub (Free)
-1. Initialize git and commit your code:
+1. Commit your code:
    ```bash
    git add .
-   git commit -m "Initial ApexPulse CRM release"
+   git commit -m "Initial Nuevo Lead CRM release"
    ```
-2. Create a new repository on [GitHub](https://github.com) (e.g. `apexpulse-crm`).
+2. Create a new repository on [GitHub](https://github.com) named `nuevo-lead-crm`.
 3. Push your repository:
    ```bash
-   git remote add origin https://github.com/<your-username>/apexpulse-crm.git
+   git remote add origin https://github.com/<your-username>/nuevo-lead-crm.git
    git branch -M main
    git push -u origin main
    ```
 
 ### Step 3: Deploy on Vercel for Free ($0)
 1. Go to [https://vercel.com](https://vercel.com) and log in with GitHub.
-2. Click **Add New** $\rightarrow$ **Project**, then import your `apexpulse-crm` repository.
+2. Click **Add New** $\rightarrow$ **Project**, then import your `nuevo-lead-crm` repository.
 3. In the **Environment Variables** section:
    - Key: `DATABASE_URL`
    - Value: `<Your PostgreSQL connection string from Step 1>`
-4. In `prisma/schema.prisma`, when deploying to PostgreSQL, update:
-   ```prisma
-   datasource db {
-     provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-5. Click **Deploy**. Vercel will build and launch your live application with a free `.vercel.app` domain and free global SSL certificate!
+4. Click **Deploy**. Vercel will build and launch your live application with a free `.vercel.app` domain and free global SSL certificate!

@@ -29,13 +29,13 @@ const GUIDE_SECTIONS = [
     content: (
       <div className="space-y-4">
         <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-          ApexPulse CRM Lead Management System (V1.0)
+          Nuevo Lead CRM Platform (V1.0)
         </h4>
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          ApexPulse CRM is an enterprise-grade Lead & Sales Pipeline Engine engineered to streamline corporate lead acquisition, multi-stakeholder tracking, line-item quoting, and seamless conversion into closed revenue.
+          Nuevo Lead CRM is an enterprise-grade Lead & Sales Pipeline Engine engineered to streamline corporate lead acquisition, multi-stakeholder tracking, line-item quoting, and seamless conversion into closed revenue.
         </p>
         <div className="p-3.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900 text-xs text-indigo-900 dark:text-indigo-300 space-y-2">
-          <p className="font-semibold">The 6 Lifecycle Stages in ApexPulse:</p>
+          <p className="font-semibold">The 6 Lifecycle Stages in Nuevo Lead:</p>
           <ul className="list-disc pl-4 space-y-1 text-[11px]">
             <li><strong>Cold:</strong> Newly captured lead; early qualification underway.</li>
             <li><strong>Warm:</strong> Active commercial engagement, client interest confirmed.</li>
@@ -58,7 +58,7 @@ const GUIDE_SECTIONS = [
           Lead Entry & Account Profile
         </h4>
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          To register a prospective client into ApexPulse, click <strong>&quot;+ New Lead&quot;</strong> in the top navigation bar. Every opportunity contains foundational tracking parameters:
+          To register a prospective client into Nuevo Lead, click <strong>&quot;+ New Lead&quot;</strong> in the top navigation bar. Every opportunity contains foundational tracking parameters:
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
           <div className="p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40">
@@ -137,7 +137,7 @@ const GUIDE_SECTIONS = [
         </p>
         <ul className="text-xs space-y-2 list-disc pl-4 text-slate-600 dark:text-slate-300">
           <li>Specify Product Description, Category, MRP, Offered Price, and Unit Quantity.</li>
-          <li>ApexPulse instantly computes the line-item total (`Offered Price × Quantity`).</li>
+          <li>Nuevo Lead instantly computes the line-item total (`Offered Price × Quantity`).</li>
           <li>The total quotation sum is calculated in real time and synced with the Quoted Deal Value.</li>
         </ul>
       </div>
@@ -199,7 +199,7 @@ const GUIDE_SECTIONS = [
           Dual-Box Field Selector for Excel / CSV Reports
         </h4>
         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-          ApexPulse features the exact dual-box selector described in Section 4 of the manual:
+          Nuevo Lead features the exact dual-box selector described in Section 4 of the manual:
         </p>
         <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 text-xs space-y-2">
           <p>1. Click <strong>&quot;Export Data&quot;</strong> in the top header.</p>
@@ -231,7 +231,7 @@ export default function UserGuideModal({ isOpen, onClose }: UserGuideModalProps)
             </div>
             <div>
               <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                ApexPulse CRM — Standard Operating Manual
+                Nuevo Lead CRM — Standard Operating Manual
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Official guide to lead capture, quoting, closing rules, and reports
@@ -282,7 +282,7 @@ export default function UserGuideModal({ isOpen, onClose }: UserGuideModalProps)
 
         {/* Footer */}
         <div className="px-6 py-3.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/40 text-xs">
-          <span className="text-slate-500">ApexPulse CRM V1.0 Enterprise Guide</span>
+          <span className="text-slate-500">Nuevo Lead CRM V1.0 Enterprise Guide</span>
           <button
             onClick={onClose}
             className="px-4 py-1.5 font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"

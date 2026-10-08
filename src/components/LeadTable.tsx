@@ -357,7 +357,7 @@ export default function LeadTable({
       {/* Table Footer info */}
       <div className="py-3 px-4 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
         <span>Showing {sortedLeads.length} leads</span>
-        <span>ApexPulse Lead Management Engine</span>
+        <span>Nuevo Lead Engine</span>
       </div>
     </div>
   );

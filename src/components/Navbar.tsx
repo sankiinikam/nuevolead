@@ -42,7 +42,7 @@ export function Navbar({
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-slate-900 tracking-tight text-lg">ApexPulse</span>
+                <span className="font-extrabold text-slate-900 tracking-tight text-lg">Nuevo Lead</span>
                 <span className="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full font-semibold border border-blue-200">CRM 1.0</span>
               </div>
               <p className="text-xs text-slate-500 hidden sm:block">Enterprise Lead & Opportunity Cloud</p>

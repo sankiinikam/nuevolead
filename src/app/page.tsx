@@ -289,7 +289,7 @@ export default function Home() {
           <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-16 text-center shadow-sm">
             <RefreshCw className="w-8 h-8 mx-auto text-indigo-600 animate-spin mb-3" />
             <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-              Loading ApexPulse CRM Pipeline...
+              Loading Nuevo Lead CRM Pipeline...
             </p>
           </div>
         ) : viewMode === 'table' ? (
@@ -315,9 +315,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 rounded bg-indigo-600 text-white font-black text-[10px] flex items-center justify-center">
-              A
+              N
             </div>
-            <span className="font-bold text-slate-800 dark:text-slate-200">ApexPulse CRM V1.0</span>
+            <span className="font-bold text-slate-800 dark:text-slate-200">Nuevo Lead CRM V1.0</span>
             <span>— Free Full-Stack Cloud Edition</span>
           </div>
 

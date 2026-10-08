@@ -121,7 +121,7 @@ export async function POST(request: Request) {
     return new NextResponse(csv, {
       headers: {
         'Content-Type': 'text/csv; charset=utf-8',
-        'Content-Disposition': `attachment; filename=ApexPulse_Leads_Export_${new Date().toISOString().slice(0, 10)}.csv`,
+        'Content-Disposition': `attachment; filename=Nuevo_Lead_Export_${new Date().toISOString().slice(0, 10)}.csv`,
       },
     });
   } catch (error: any) {
