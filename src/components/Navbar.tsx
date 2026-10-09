@@ -12,10 +12,11 @@ import {
   Sparkles,
   Calendar as CalendarIcon,
   Users,
-  Building2,
   ChevronDown,
   ShieldCheck,
-  Check
+  LogOut,
+  UserCheck,
+  Briefcase
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -41,11 +42,35 @@ export function Navbar({
   searchQuery,
   setSearchQuery,
 }: NavbarProps) {
-  const { currentUser, users, setCurrentUser, isAdmin, isManager } = useAuth();
+  const { currentUser, isAdmin, isManager, logout } = useAuth();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  const getRoleBadge = (role?: string) => {
+    switch (role) {
+      case 'ADMIN':
+        return (
+          <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+            👑 Admin
+          </span>
+        );
+      case 'MANAGER':
+        return (
+          <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-indigo-100 dark:bg-indigo-950/70 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+            👔 Manager
+          </span>
+        );
+      case 'SALES_EXECUTIVE':
+      default:
+        return (
+          <span className="text-[10px] px-2 py-0.5 rounded-full font-bold bg-sky-100 dark:bg-sky-950/70 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+            💼 Sales Rep
+          </span>
+        );
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <header className="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           
@@ -62,13 +87,13 @@ export function Navbar({
                 </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
-                Enterprise Lead & Hierarchy Cloud
+                Enterprise Cloud CRM
               </p>
             </div>
           </div>
 
           {/* Center Navigation Tabs */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-800/60 p-1 rounded-xl text-xs font-semibold">
+          <nav className="hidden md:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/60 p-1 rounded-xl text-xs font-semibold">
             <button
               onClick={() => setActiveTab('pipeline')}
               className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all ${
@@ -93,6 +118,7 @@ export function Navbar({
               <span>Follow-Up Calendar</span>
             </button>
 
+            {/* Admin User Management Tab */}
             {(isAdmin || isManager) && (
               <button
                 onClick={() => setActiveTab('team')}
@@ -103,7 +129,10 @@ export function Navbar({
                 }`}
               >
                 <Users className="w-3.5 h-3.5 text-purple-500" />
-                <span>Sales Team ({users.length})</span>
+                <span>{isAdmin ? 'User Admin & Hierarchy' : 'My Team'}</span>
+                {isAdmin && (
+                  <span className="w-2 h-2 rounded-full bg-purple-500" title="Admin access" />
+                )}
               </button>
             )}
           </nav>
@@ -124,7 +153,7 @@ export function Navbar({
             </div>
           )}
 
-          {/* Right Action Tools & User Hierarchy Switcher */}
+          {/* Right Action Tools & User Profile / Logout */}
           <div className="flex items-center gap-2">
             
             {/* View Switcher (only on pipeline tab) */}
@@ -176,18 +205,18 @@ export function Navbar({
               <span className="hidden sm:inline">Add Lead</span>
             </button>
 
-            {/* User Profile & Role Switcher Dropdown */}
+            {/* Authenticated User Menu */}
             <div className="relative">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
                 className="flex items-center gap-2 p-1.5 pl-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
               >
-                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-sky-500 text-white font-bold text-xs flex items-center justify-center">
+                <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-sky-500 text-white font-bold text-xs flex items-center justify-center shadow-sm">
                   {currentUser?.name?.charAt(0) || 'U'}
                 </div>
                 <div className="hidden md:block text-left">
                   <div className="text-[11px] font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                    {currentUser?.name || 'Logged In'}
+                    {currentUser?.name || 'User'}
                   </div>
                   <div className="text-[9px] font-semibold text-indigo-600 dark:text-indigo-400">
                     {currentUser?.role === 'ADMIN'
@@ -200,81 +229,92 @@ export function Navbar({
                 <ChevronDown className="w-3 h-3 text-slate-400" />
               </button>
 
-              {/* Hierarchy Switcher Modal Menu */}
+              {/* Profile & Logout Dropdown */}
               {isProfileOpen && (
                 <>
                   <div
                     className="fixed inset-0 z-30"
                     onClick={() => setIsProfileOpen(false)}
                   />
-                  <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xl z-40 p-2 animate-fadeIn text-xs">
-                    <div className="p-2 border-b border-slate-100 dark:border-slate-800 mb-1">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
-                        Active Profile
-                      </span>
-                      <p className="font-bold text-slate-900 dark:text-white mt-0.5">
+                  <div className="absolute right-0 mt-2 w-72 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl z-40 p-3 animate-fadeIn text-xs space-y-3">
+                    
+                    {/* User Identity Header */}
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+                          Logged In User
+                        </span>
+                        {getRoleBadge(currentUser?.role)}
+                      </div>
+                      <p className="font-bold text-slate-900 dark:text-white text-sm">
                         {currentUser?.name}
                       </p>
-                      <p className="text-[11px] text-slate-500">
-                        {currentUser?.designation} • {currentUser?.email}
+                      <p className="text-[11px] text-slate-500 truncate">
+                        {currentUser?.email}
                       </p>
-                    </div>
-
-                    <div className="p-2">
-                      <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-1">
-                        Switch Role / Employee (Live Simulation)
-                      </span>
-                      <div className="space-y-1">
-                        {users.map((u) => {
-                          const isSelected = currentUser?.id === u.id;
-                          return (
-                            <button
-                              key={u.id}
-                              onClick={() => {
-                                setCurrentUser(u);
-                                setIsProfileOpen(false);
-                              }}
-                              className={`w-full text-left p-2 rounded-lg flex items-center justify-between transition-colors ${
-                                isSelected
-                                  ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold'
-                                  : 'hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
-                              }`}
-                            >
-                              <div>
-                                <div className="flex items-center gap-1.5">
-                                  <span>{u.name}</span>
-                                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold">
-                                    {u.role === 'ADMIN' ? '👑 Admin' : u.role === 'MANAGER' ? '👔 Mgr' : '💼 Rep'}
-                                  </span>
-                                </div>
-                                <span className="text-[10px] text-slate-400 block font-normal">
-                                  {u.designation}
-                                </span>
-                              </div>
-                              {isSelected && <Check className="w-3.5 h-3.5 text-indigo-600" />}
-                            </button>
-                          );
-                        })}
+                      <div className="mt-1.5 pt-1.5 border-t border-slate-200/50 dark:border-slate-700/50 text-[10px] text-slate-500 flex items-center gap-1.5">
+                        <Briefcase className="w-3 h-3 text-slate-400" />
+                        <span>{currentUser?.designation || 'Sales Team'}</span>
+                        <span>•</span>
+                        <span>{currentUser?.department || 'Field Sales'}</span>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between px-2">
+                    {/* Hierarchy Info */}
+                    {currentUser?.reportingTo && (
+                      <div className="px-2 py-1 text-[11px] text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                        <UserCheck className="w-3.5 h-3.5 text-indigo-500" />
+                        <span>Reports to: <strong className="text-slate-800 dark:text-slate-200">{currentUser.reportingTo.name}</strong></span>
+                      </div>
+                    )}
+
+                    {/* Quick Navigation Links */}
+                    <div className="space-y-1 pt-1 border-t border-slate-100 dark:border-slate-800">
+                      {(isAdmin || isManager) && (
+                        <button
+                          onClick={() => {
+                            setActiveTab('team');
+                            setIsProfileOpen(false);
+                          }}
+                          className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold flex items-center justify-between transition-colors"
+                        >
+                          <div className="flex items-center gap-2">
+                            <ShieldCheck className="w-4 h-4 text-purple-600" />
+                            <span>{isAdmin ? 'User Admin & Hierarchy' : 'Team Members'}</span>
+                          </div>
+                          <span className="text-[10px] text-slate-400">Open →</span>
+                        </button>
+                      )}
+
                       <button
                         onClick={() => {
-                          setActiveTab('team');
+                          onOpenGuide();
                           setIsProfileOpen(false);
                         }}
-                        className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 font-semibold text-[11px]"
+                        className="w-full text-left px-2.5 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-semibold flex items-center justify-between transition-colors"
                       >
-                        Manage Team →
-                      </button>
-                      <button
-                        onClick={onOpenGuide}
-                        className="text-slate-500 hover:text-slate-700 text-[11px]"
-                      >
-                        Help Guide
+                        <div className="flex items-center gap-2">
+                          <BookOpen className="w-4 h-4 text-indigo-600" />
+                          <span>CRM Operating Guide</span>
+                        </div>
+                        <span className="text-[10px] text-slate-400">Docs</span>
                       </button>
                     </div>
+
+                    {/* Logout Button */}
+                    <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                      <button
+                        onClick={() => {
+                          setIsProfileOpen(false);
+                          logout();
+                        }}
+                        className="w-full py-2 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/40 dark:hover:bg-rose-950/70 text-rose-600 dark:text-rose-400 font-bold flex items-center justify-center gap-2 transition-colors border border-rose-200 dark:border-rose-900/60"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        <span>Sign Out of Nuevo Lead</span>
+                      </button>
+                    </div>
+
                   </div>
                 </>
               )}

@@ -13,6 +13,7 @@ import ExportModal from '@/components/ExportModal';
 import UserGuideModal from '@/components/UserGuideModal';
 import FollowUpCalendar from '@/components/FollowUpCalendar';
 import TeamManagement from '@/components/TeamManagement';
+import LoginPage from '@/components/LoginPage';
 import {
   Plus,
   RefreshCw,
@@ -25,7 +26,7 @@ import {
 } from 'lucide-react';
 
 export default function Home() {
-  const { currentUser, isAdmin, isManager, isSalesExecutive } = useAuth();
+  const { currentUser, isLoading: authLoading, isAdmin, isManager, isSalesExecutive } = useAuth();
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -54,6 +55,7 @@ export default function Home() {
 
   // Fetch leads
   const fetchLeads = useCallback(async () => {
+    if (!currentUser) return;
     try {
       setIsLoading(true);
       const params = new URLSearchParams();
@@ -74,14 +76,15 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [searchQuery, statusFilter, onlyMyLeads, currentUser?.id]);
+  }, [searchQuery, statusFilter, onlyMyLeads, currentUser]);
 
   useEffect(() => {
+    if (!currentUser) return;
     const timer = setTimeout(() => {
       fetchLeads();
     }, 250);
     return () => clearTimeout(timer);
-  }, [fetchLeads]);
+  }, [fetchLeads, currentUser]);
 
   // Lead Modal handlers
   const handleOpenNewLead = () => {
@@ -192,6 +195,28 @@ export default function Home() {
     }
     return true;
   });
+
+  // Auto-redirect sales reps away from team admin tab
+  useEffect(() => {
+    if (currentUser && !isAdmin && !isManager && activeTab === 'team') {
+      setActiveTab('pipeline');
+    }
+  }, [currentUser, isAdmin, isManager, activeTab]);
+
+  // Loading state while checking authentication
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center text-white space-y-4">
+        <div className="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm font-semibold text-slate-400">Loading Nuevo Lead CRM...</p>
+      </div>
+    );
+  }
+
+  // Render Login Page if not signed in
+  if (!currentUser) {
+    return <LoginPage />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-50/70 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans">

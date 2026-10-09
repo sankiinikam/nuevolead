@@ -65,6 +65,7 @@ export async function POST(request: Request) {
     const {
       name,
       email,
+      password = 'password123',
       role = 'SALES_EXECUTIVE',
       designation = 'Sales Executive',
       department = 'Field Sales',
@@ -77,15 +78,19 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Name and Email are required' }, { status: 400 });
     }
 
-    const existing = await prisma.user.findUnique({ where: { email } });
+    const cleanEmail = email.trim().toLowerCase();
+    const existing = await prisma.user.findFirst({
+      where: { email: { equals: cleanEmail, mode: 'insensitive' } }
+    });
     if (existing) {
       return NextResponse.json({ error: 'User with this email already exists' }, { status: 400 });
     }
 
     const newUser = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: name.trim(),
+        email: cleanEmail,
+        password: password || 'password123',
         role,
         designation,
         department,
@@ -100,7 +105,8 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json(newUser, { status: 201 });
+    const { password: _, ...safeUser } = newUser;
+    return NextResponse.json(safeUser, { status: 201 });
   } catch (error: any) {
     console.error('Error creating user:', error);
     return NextResponse.json({ error: error.message || 'Failed to create user' }, { status: 500 });

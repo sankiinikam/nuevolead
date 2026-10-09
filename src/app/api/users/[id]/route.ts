@@ -13,8 +13,9 @@ export async function PUT(
     const updated = await prisma.user.update({
       where: { id },
       data: {
-        ...(body.name && { name: body.name }),
-        ...(body.email && { email: body.email }),
+        ...(body.name && { name: body.name.trim() }),
+        ...(body.email && { email: body.email.trim().toLowerCase() }),
+        ...(body.password && { password: body.password }),
         ...(body.role && { role: body.role }),
         ...(body.designation !== undefined && { designation: body.designation }),
         ...(body.department !== undefined && { department: body.department }),
@@ -30,7 +31,8 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json(updated);
+    const { password: _, ...safeUpdated } = updated;
+    return NextResponse.json(safeUpdated);
   } catch (error: any) {
     console.error('Error updating user:', error);
     return NextResponse.json({ error: error.message || 'Failed to update user' }, { status: 500 });
